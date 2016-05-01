@@ -1,5 +1,6 @@
 package com.sqa.lp;
 
+import org.apache.log4j.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.firefox.*;
@@ -9,19 +10,18 @@ import org.testng.annotations.*;
 public class BasicAutoTest {
 
 	static WebDriver driver;
+	static Logger logger = Logger.getLogger(BasicAutoTest.class);
 
-	@BeforeClass(enabled = true, groups = "chrome")
+	@BeforeClass(enabled = false, groups = "chrome")
 	public static void setUpChrome() throws InterruptedException {
 		System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver");
 		driver = new ChromeDriver();
 
 		driver.get("http://gmail.com");
-		Thread.sleep(1000);// not recommended, used only when we need the test
-							// to wait for something (eg. a page that takes time
-							// to load)
+		Thread.sleep(1000);
 	}
 
-	@BeforeClass(enabled = false, groups = "firefox")
+	@BeforeClass(enabled = true, groups = "firefox")
 	public static void setUpFirefox() throws InterruptedException {
 		driver = new FirefoxDriver();
 		driver.get("http://gmail.com");
@@ -45,7 +45,14 @@ public class BasicAutoTest {
 	@Test(dataProvider = "UserAccountInfo")
 	public void test(String userName, String password) {
 		System.out.println("Basic Test: U- " + userName + " P- " + password);
-
+		logger.info("My Informaion.. ");
+		for (int i = 0; i < 1000; i++) {
+			logger.info("Info Message: " + i);
+			if (i % 5 == 0) {
+				logger.fatal("Fatal Message: " + i);
+			}
+			logger.debug("Debug Message: " + i);
+		}
 	}
 
 }
